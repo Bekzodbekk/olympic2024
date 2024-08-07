@@ -1,0 +1,9 @@
+server:
+  host: localhost
+  port: 8006
+
+mongo:
+  host: localhost
+  port: 27017
+  database: "liveStreamEvents"
+  collection: events

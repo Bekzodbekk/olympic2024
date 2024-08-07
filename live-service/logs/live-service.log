@@ -1,0 +1,5 @@
+time="2024-08-08T00:03:32+05:00" level=info msg="Configuration loaded successfully"
+time="2024-08-08T00:03:32+05:00" level=info msg="Connected to the database successfully"
+time="2024-08-08T00:03:32+05:00" level=info msg="Live service started successfully"
+time="2024-08-08T00:04:57+05:00" level=info msg="Received signal: interrupt"
+time="2024-08-08T00:05:02+05:00" level=info msg="Graceful shutdown complete."
