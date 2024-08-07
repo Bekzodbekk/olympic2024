@@ -8,3 +8,6 @@ migrate-down:
 
 migrate-force:
 	migrate -path ./db/migrations -database ${DB_URL} force 1
+
+
+	gytfrdctgyhujikolp;
