@@ -1,0 +1,20 @@
+server:
+  host: localhost
+  port: 9000
+
+services:
+  user_service:
+    host: localhost
+    port: 8080
+  medal_service:
+    host: localhost
+    port: 8002
+  country_service:
+    host: localhost
+    port: 8003
+  event_service:
+    host: localhost
+    port: 8004
+  athlete_service:
+    host: localhost
+    port: 8005

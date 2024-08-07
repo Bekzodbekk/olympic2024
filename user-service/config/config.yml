@@ -1,0 +1,14 @@
+server:
+  host: localhost
+  port: 8080
+
+redis:
+  host: localhost
+  port: 6379
+
+postgres:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: 1
+  name: postgres
