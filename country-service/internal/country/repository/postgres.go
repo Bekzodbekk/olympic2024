@@ -1,10 +1,11 @@
 package repository
 
 import (
+	"country-service/logger"
 	"database/sql"
 	"errors"
+
 	pb "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/countrypb"
-	"country-service/logger"
 	"github.com/sirupsen/logrus"
 )
 
@@ -160,7 +161,7 @@ func (db *PostgresCountryRepository) UpdateCountry(req *pb.UpdateCountryRequest)
 }
 
 func (db *PostgresCountryRepository) DeleteCountry(req *pb.DeleteCountryRequest) (*pb.DeleteCountryResponse, error) {
-	
+
 	resp := pb.DeleteCountryResponse{}
 	query := `
 	UPDATE countries 
