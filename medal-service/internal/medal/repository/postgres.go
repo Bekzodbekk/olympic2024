@@ -24,23 +24,23 @@ func (r *MedalRepo) CreateMedal(req *pb.CreateMedalRequest) (*pb.CreateMedalResp
 	// Check if country exists
 	if exists, err := r.checkExistence("countries", req.CountryId); !exists {
 		logger.Warn("Country with ID does not exist or has been deleted", logrus.Fields{
-			"country_id":req.CountryId,
+			"country_id": req.CountryId,
 		})
 		return nil, err
 	}
 
 	// Check if event exists
 	if exists, err := r.checkExistence("events", req.EventId); !exists {
-		logger.Warn("Event with ID does not exist or has been deleted",  logrus.Fields{
-			"event_id":req.EventId,
+		logger.Warn("Event with ID does not exist or has been deleted", logrus.Fields{
+			"event_id": req.EventId,
 		})
 		return nil, err
 	}
 
 	// Check if athlete exists
 	if exists, err := r.checkExistence("athletes", req.AthleteId); !exists {
-		logger.Warn("Athlete with ID does not exist or has been deleted",  logrus.Fields{
-			"athlete_id":req.CountryId,
+		logger.Warn("Athlete with ID does not exist or has been deleted", logrus.Fields{
+			"athlete_id": req.CountryId,
 		})
 		return nil, err
 	}
