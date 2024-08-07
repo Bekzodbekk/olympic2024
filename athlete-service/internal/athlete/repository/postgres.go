@@ -20,23 +20,14 @@ func NewPostgresAthleteRepository(db *sql.DB) AthleteRepository {
 }
 
 func (db *PostgresAthleteRepository) CreateAthlete(req *pb.CreateAthleteRequest) (*pb.Athlete, error) {
-	
-	check := pb.GetAthleteResponse{}
-	err := db.DB.QueryRow(
-	`SELECT id, name
-	FROM countries 
-	WHERE id=$1 AND deleted_at=0`, req.CountryId).Scan(&check.CountryId, &check.CountryName)
-	if err != nil {
-		logger.Warn("country with id does not exist or has been deleted:", req.CountryId)
-		return nil, err
-	}
+
 	resp := pb.Athlete{}
 	query := `
 	INSERT INTO athletes(name, country_id, sport_type) 
 	VALUES($1, $2, $3)
 	RETURNING id, name, country_id, sport_type, created_at, updated_at, deleted_at`
 
-	err = db.DB.QueryRow(query, req.Name, req.CountryId, req.SportType).Scan(
+	err := db.DB.QueryRow(query, req.Name, req.CountryId, req.SportType).Scan(
 		&resp.Id,
 		&resp.Name,
 		&resp.CountryId,
@@ -64,16 +55,13 @@ func (db *PostgresAthleteRepository) GetAthlete(req *pb.GetAthleteRequest) (*pb.
 
 	resp := pb.GetAthleteResponse{}
 	query := `
-	SELECT a.id, a.name, c.name AS country_name, a.country_id, a.sport_type, a.created_at, a.updated_at, a.deleted_at 
-	FROM athletes AS a
-	INNER JOIN countries AS c 
-	ON a.country_id = c.id
-	WHERE a.id=$1 AND a.deleted_at=0 AND c.deleted_at=0`
+	SELECT * 
+	FROM athletes 
+	WHERE id=$1 AND deleted_at=0`
 
 	err := db.DB.QueryRow(query, req.Id).Scan(
 		&resp.Id,
 		&resp.Name,
-		&resp.CountryName,
 		&resp.CountryId,
 		&resp.SportType,
 		&resp.CreatedAt,
@@ -99,11 +87,9 @@ func (db *PostgresAthleteRepository) ListAthletes(req *pb.ListOfAthleteRequest) 
 
 	resp := pb.ListOfAthleteResponse{}
 	query := 
-	`SELECT a.id, a.name, c.name AS country_name, a.country_id, a.sport_type, a.created_at, a.updated_at, a.deleted_at 
-	FROM athletes AS a
-	INNER JOIN countries AS c 
-	ON a.country_id = c.id
-	WHERE a.deleted_at=0 AND c.deleted_at=0`
+	`SELECT * 
+	FROM athletes 
+	WHERE deleted_at=0`
 	rows, err := db.DB.Query(query)
 	if err != nil {
 		logger.Error("Listing athletes failed", logrus.Fields{"error": err})
@@ -116,7 +102,6 @@ func (db *PostgresAthleteRepository) ListAthletes(req *pb.ListOfAthleteRequest) 
 		err := rows.Scan(
 			&item.Id,
 			&item.Name,
-			&item.CountryName,
 			&item.CountryId,
 			&item.SportType,
 			&item.CreatedAt,

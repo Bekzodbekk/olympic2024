@@ -1,6 +1,6 @@
 server:
   host: localhost
-  port: 8080
+  port: 8001
 
 redis:
   host: localhost
@@ -11,4 +11,4 @@ postgres:
   port: 5432
   user: postgres
   password: 1
-  name: postgres
+  name: userdb

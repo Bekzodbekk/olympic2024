@@ -3,6 +3,9 @@ package handler
 import (
 	"context"
 	pb "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/medalspb"
+	pbCountry "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/countrypb"
+	pbEvent "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/eventpb"
+	pbAthlete "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/athletepb"
 	"api-gateway/logger"
 	"api-gateway/models"
 
@@ -10,7 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// @Router /medal [post]
+// @Router /medals [post]
 // @Summary CREATE MEDAL
 // @Description This method creates a medal
 // @Security BearerAuth
@@ -22,12 +25,33 @@ import (
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) CreateMedal(c *gin.Context) {
+
 	req := pb.CreateMedalRequest{}
 	if err := c.BindJSON(&req); err != nil {
 		logger.Error("CreateMedal: Failed to bind JSON: ", err)
 		c.JSON(400, models.Message{Err: err.Error()})
 		return
 	}
+	
+	//Check Country Id
+	if _, err := h.Service.GetCountry(&pbCountry.GetCountryRequest{Id: req.CountryId}); err != nil {
+		logger.Error("CreateMedal: Failed to get country: ", err)
+		c.JSON(500, models.Message{Err: "Country with the provided ID does not exist or has been deleted"})
+		return
+	}
+	//Check Event Id
+	if _, err := h.Service.GetEvent(&pbEvent.GetEventRequest{Id: req.EventId}); err != nil {
+		logger.Error("CreateMedal: Failed to get event: ", err)
+		c.JSON(500, models.Message{Err: "Event with the provided ID does not exist or has been deleted"})
+		return
+	}
+	//Check Athelete Id
+	if _, err := h.Service.GetAthlete(&pbAthlete.GetAthleteRequest{Id: req.AthleteId}); err != nil {
+		logger.Error("CreateMedal: Failed to get athlete: ", err)
+		c.JSON(500, models.Message{Err: "Athlete with the provided ID does not exist or has been deleted"})
+		return
+	}
+
 	resp, err := h.Service.CreateMedal(context.Background(), &req)
 	if err != nil {
 		logger.Error("CreateMedal: Failed to create medal: ", err)
@@ -41,7 +65,7 @@ func (h *HandlerST) CreateMedal(c *gin.Context) {
 	c.JSON(200, resp)
 }
 
-// @Router /medal/{id} [put]
+// @Router /medals/{id} [put]
 // @Summary UPDATE MEDAL
 // @Description This method updates a medal
 // @Security BearerAuth
@@ -54,6 +78,7 @@ func (h *HandlerST) CreateMedal(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) UpdateMedal(c *gin.Context) {
+
 	req := pb.UpdateMedalRequest{}
 	req.Id = c.Param("id")
 	if err := c.BindJSON(&req); err != nil {
@@ -78,7 +103,7 @@ func (h *HandlerST) UpdateMedal(c *gin.Context) {
 	c.JSON(200, resp)
 }
 
-// @Router /medal/{id} [delete]
+// @Router /medals/{id} [delete]
 // @Summary DELETE MEDAL
 // @Description This method deletes a medal
 // @Security BearerAuth
@@ -90,6 +115,7 @@ func (h *HandlerST) UpdateMedal(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) DeleteMedal(c *gin.Context) {
+
 	req := pb.DeleteMedalRequest{}
 	req.Id = c.Param("id")
 	resp, err := h.Service.DeleteMedal(context.Background(), &req)
@@ -105,7 +131,7 @@ func (h *HandlerST) DeleteMedal(c *gin.Context) {
 	c.JSON(200, resp)
 }
 
-// @Router /medal/{id} [get]
+// @Router /medals/{id} [get]
 // @Summary GET MEDAL BY ID
 // @Description This method gets a medal by ID
 // @Security BearerAuth
@@ -117,6 +143,7 @@ func (h *HandlerST) DeleteMedal(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) GetMedalById(c *gin.Context) {
+
 	req := pb.GetMedalByIdRequest{}
 	req.Id = c.Param("id")
 	resp, err := h.Service.GetMedalById(context.Background(), &req)
@@ -145,6 +172,7 @@ func (h *HandlerST) GetMedalById(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) GetMedals(c *gin.Context) {
+
 	resp, err := h.Service.GetMedals(context.Background(), &pb.VoidMedal{})
 	if err != nil {
 		logger.Error("GetMedals: Failed to get medals: ", err)
@@ -156,7 +184,7 @@ func (h *HandlerST) GetMedals(c *gin.Context) {
 	c.JSON(200, resp)
 }
 
-// @Router /medal/filter [post]
+// @Router /medals/filter [get]
 // @Summary GET MEDALS BY FILTER
 // @Description This method gets medals by filter
 // @Security BearerAuth
@@ -168,6 +196,7 @@ func (h *HandlerST) GetMedals(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) GetMedalByFilter(c *gin.Context) {
+	
 	req := pb.GetMedalByFilterRequest{}
 	if err := c.BindJSON(&req); err != nil {
 		logger.Error("GetMedalByFilter: Failed to bind JSON: ", err)

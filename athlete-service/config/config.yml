@@ -7,4 +7,4 @@ postgres:
   port: 5432
   user: postgres
   password: 1
-  name: postgres
+  name: athletedb

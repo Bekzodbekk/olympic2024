@@ -5,7 +5,7 @@ server:
 services:
   user_service:
     host: localhost
-    port: 8080
+    port: 8001
   medal_service:
     host: localhost
     port: 8002

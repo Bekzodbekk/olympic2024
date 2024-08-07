@@ -21,30 +21,6 @@ func NewPostgresMedalRepo(db *sql.DB) MedalRepository {
 }
 
 func (r *MedalRepo) CreateMedal(req *pb.CreateMedalRequest) (*pb.CreateMedalResponse, error) {
-	// Check if country exists
-	if exists, err := r.checkExistence("countries", req.CountryId); !exists {
-		logger.Warn("Country with ID does not exist or has been deleted", logrus.Fields{
-			"country_id":req.CountryId,
-		})
-		return nil, err
-	}
-
-	// Check if event exists
-	if exists, err := r.checkExistence("events", req.EventId); !exists {
-		logger.Warn("Event with ID does not exist or has been deleted",  logrus.Fields{
-			"event_id":req.EventId,
-		})
-		return nil, err
-	}
-
-	// Check if athlete exists
-	if exists, err := r.checkExistence("athletes", req.AthleteId); !exists {
-		logger.Warn("Athlete with ID does not exist or has been deleted",  logrus.Fields{
-			"athlete_id":req.CountryId,
-		})
-		return nil, err
-	}
-
 	query := `
 		INSERT INTO medals (country_id, type, event_id, athlete_id)
 		VALUES ($1, $2, $3, $4)
@@ -214,12 +190,3 @@ func (r *MedalRepo) GetMedalByFilter(req *pb.GetMedalByFilterRequest) (*pb.GetMe
 	return &pb.GetMedalByFilterResponse{Medals: medals}, nil
 }
 
-func (r *MedalRepo) checkExistence(table string, id string) (bool, error) {
-	query := fmt.Sprintf("SELECT 1 FROM %s WHERE id=$1 AND deleted_at=0 LIMIT 1", table)
-	var exists int
-	err := r.db.QueryRow(query, id).Scan(&exists)
-	if err != nil && err != sql.ErrNoRows {
-		return false, err
-	}
-	return exists == 1, nil
-}

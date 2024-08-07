@@ -1,4 +1,4 @@
-DB_URL = postgres://postgres:1@localhost:5432/postgres?sslmode=disable
+DB_URL = postgres://postgres:1@localhost:5432/medaldb?sslmode=disable
 
 gen-proto:
 	@protoc \

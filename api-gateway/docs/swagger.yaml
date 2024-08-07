@@ -956,7 +956,31 @@ paths:
       summary: UPDATE EVENT
       tags:
       - EVENT
-  /medal:
+  /medals:
+    get:
+      consumes:
+      - application/json
+      description: This method gets all medals
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetMedalsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Message'
+      security:
+      - BearerAuth: []
+      summary: GET MEDALS
+      tags:
+      - MEDAL
     post:
       consumes:
       - application/json
@@ -988,7 +1012,7 @@ paths:
       summary: CREATE MEDAL
       tags:
       - MEDAL
-  /medal/{id}:
+  /medals/{id}:
     delete:
       consumes:
       - application/json
@@ -1085,8 +1109,8 @@ paths:
       summary: UPDATE MEDAL
       tags:
       - MEDAL
-  /medal/filter:
-    post:
+  /medals/filter:
+    get:
       consumes:
       - application/json
       description: This method gets medals by filter
@@ -1117,18 +1141,18 @@ paths:
       summary: GET MEDALS BY FILTER
       tags:
       - MEDAL
-  /medals:
+  /users:
     get:
       consumes:
       - application/json
-      description: This method gets all medals
+      description: This method gets all users
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.GetMedalsResponse'
+            $ref: '#/definitions/models.GetUsersResponse'
         "400":
           description: Bad Request
           schema:
@@ -1139,10 +1163,10 @@ paths:
             $ref: '#/definitions/models.Message'
       security:
       - BearerAuth: []
-      summary: GET MEDALS
+      summary: GET USERS
       tags:
-      - MEDAL
-  /user/{id}:
+      - USER
+  /users/{id}:
     delete:
       consumes:
       - application/json
@@ -1173,32 +1197,6 @@ paths:
       summary: DELETE USER
       tags:
       - USER
-  /users:
-    get:
-      consumes:
-      - application/json
-      description: This method gets all users
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.GetUsersResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Message'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.Message'
-      security:
-      - BearerAuth: []
-      summary: GET USERS
-      tags:
-      - USER
-  /users/{id}:
     get:
       consumes:
       - application/json

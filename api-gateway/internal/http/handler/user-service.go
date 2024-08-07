@@ -22,6 +22,7 @@ import (
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) RegisterUser(c *gin.Context) {
+
 	req := pb.CreateUserRequest{}
 	if err := c.BindJSON(&req); err != nil {
 		logger.Error("RegisterUser: Failed to bind JSON: ", err)
@@ -53,6 +54,7 @@ func (h *HandlerST) RegisterUser(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) LoginUser(c *gin.Context) {
+
 	req := pb.LoginRequest{}
 	if err := c.BindJSON(&req); err != nil {
 		logger.Error("LoginUser: Failed to bind JSON: ", err)
@@ -84,6 +86,7 @@ func (h *HandlerST) LoginUser(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) RefreshToken(c *gin.Context) {
+
 	req := pb.RefreshTokenRequest{}
 	if err := c.BindJSON(&req); err != nil {
 		logger.Error("RefreshToken: Failed to bind JSON: ", err)
@@ -113,8 +116,12 @@ func (h *HandlerST) RefreshToken(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) UpdateUser(c *gin.Context) {
-	req := pb.UpdateUserRequest{}
-	req.User.Id = c.Param("id")
+
+	req := pb.UpdateUserRequest{
+        User: &pb.User{},
+    }
+    req.User.Id = c.Param("id")
+
 	if err := c.BindJSON(&req); err != nil {
 		logger.Error("UpdateUser: Failed to bind JSON for user ID ", logrus.Fields{
 			"id": req.User.Id,
@@ -137,7 +144,7 @@ func (h *HandlerST) UpdateUser(c *gin.Context) {
 	c.JSON(200, resp)
 }
 
-// @Router /user/{id} [delete]
+// @Router /users/{id} [delete]
 // @Summary DELETE USER
 // @Description This method deletes a user
 // @Security BearerAuth
@@ -149,6 +156,7 @@ func (h *HandlerST) UpdateUser(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) DeleteUser(c *gin.Context) {
+
 	req := pb.DeleteUserRequest{}
 	req.Id = c.Param("id")
 	resp, err := h.Service.DeleteUser(context.Background(), &req)
@@ -176,6 +184,7 @@ func (h *HandlerST) DeleteUser(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) GetUserById(c *gin.Context) {
+
 	req := pb.GetUserRequest{}
 	req.Id = c.Param("id")
 	resp, err := h.Service.GetUserById(context.Background(), &req)
@@ -204,6 +213,7 @@ func (h *HandlerST) GetUserById(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) GetUsers(c *gin.Context) {
+
 	resp, err := h.Service.GetUsers(context.Background(), &pb.Void{})
 	if err != nil {
 		logger.Error("GetUsers: Failed to get users: ", err)
@@ -227,6 +237,7 @@ func (h *HandlerST) GetUsers(c *gin.Context) {
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) GetUserByFilter(c *gin.Context) {
+	
 	req := pb.UserFilter{}
 	if err := c.BindJSON(&req); err != nil {
 		logger.Error("GetUserByFilter: Failed to bind JSON: ", err)

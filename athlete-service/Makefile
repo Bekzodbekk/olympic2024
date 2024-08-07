@@ -1,4 +1,4 @@
-DB_URL = postgres://postgres:1@localhost:5432/postgres?sslmode=disable
+DB_URL = postgres://postgres:1@localhost:5432/athletedb?sslmode=disable
 
 migrate-create:
 	@migrate create -ext sql -dir ./db/migrations -seq athletes_table

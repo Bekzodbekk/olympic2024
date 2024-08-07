@@ -35,6 +35,15 @@ func NewGin(service *service.ServiceRepositoryClient) *gin.Engine {
 	r.GET("/users/:id", handler.GetUserById)
 	r.GET("/users", handler.GetUsers)
 	r.GET("/users/filter", handler.GetUserByFilter)
+	r.DELETE("/users/:id", handler.DeleteUser)
+
+	//Model routes
+	r.POST("/medals", handler.CreateMedal)
+	r.GET("/medals", handler.GetMedals)
+	r.GET("/medals/:id", handler.GetMedalById)
+	r.GET("/medals/filter", handler.GetMedalByFilter)
+	r.PUT("/medals/:id", handler.UpdateMedal)
+	r.DELETE("/medals/:id", handler.DeleteMedal)
 
 	// Athlete routes
 	r.POST("/athletes", handler.CreateAthlete)

@@ -2,6 +2,7 @@ package handler
 
 import (
 	pb "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/athletepb"
+	pbCountry "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/countrypb"
 	"api-gateway/logger"
 	"api-gateway/models"
 
@@ -28,6 +29,14 @@ func (h *HandlerST) CreateAthlete(c *gin.Context) {
 		c.JSON(400, models.Message{Err: err.Error()})
 		return
 	}
+
+	//Check Country Id
+	if _, err := h.Service.GetCountry(&pbCountry.GetCountryRequest{Id: req.CountryId}); err != nil {
+		logger.Error("CreateAthlete: Failed to get country: ", err)
+		c.JSON(500, models.Message{Err: "Country with the provided ID does not exist or has been deleted"})
+		return
+	}
+
 	resp, err := h.Service.CreateAthlete(&req)
 	if err != nil {
 		logger.Error("CreateAthlete: Failed to create athlete: ", err)
