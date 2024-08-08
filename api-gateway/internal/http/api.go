@@ -2,6 +2,7 @@ package http
 
 import (
 	"api-gateway/internal/http/handler"
+	"api-gateway/internal/http/middleware"
 	service "api-gateway/internal/service"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,9 @@ func NewGin(service *service.ServiceRepositoryClient) *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	handler := handler.NewHandler(service)
+
+	rateLimiter := middleware.NewRateLimiter(1, 5)
+	r.Use(rateLimiter.RateLimitMiddleware())
 
 	// Authentication routes
 	r.POST("/auth/register", handler.RegisterUser)
