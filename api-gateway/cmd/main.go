@@ -6,6 +6,7 @@ import (
 	athleteClient "api-gateway/internal/pkg/athlete-service"
 	countryClient "api-gateway/internal/pkg/country-service"
 	eventClient "api-gateway/internal/pkg/event-service"
+	liveClient "api-gateway/internal/pkg/live-service"
 	config "api-gateway/internal/pkg/load"
 	medalClient "api-gateway/internal/pkg/medal-service"
 	userClient "api-gateway/internal/pkg/user-service"
@@ -60,7 +61,13 @@ func main() {
 	}
 	logger.Info("Connected to athlete service successfully")
 
-	s := service.NewServiceRepositoryClient(connUserService, connMedalService, connCountryService, connEventService, connAthleteService)
+	connLiveService, err := liveClient.DialWithLiveService(*cfg)
+	if err != nil {
+		logger.Fatal("Failed to connect to liveStream service: ", err)
+	}
+	logger.Info("Connected to liveStream service successfully")
+
+	s := service.NewServiceRepositoryClient(connUserService, connMedalService, connCountryService, connEventService, connAthleteService, connLiveService)
 
 	r := api.NewGin(s)
 	addr := fmt.Sprintf(":%d", cfg.ServerPort)

@@ -1,12 +1,14 @@
 package repository
 
 import (
+	"context"
+
 	pbUserAthlete "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/athletepb"
 	pbUserCountry "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/countrypb"
 	pbUserEvent "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/eventpb"
-	"context"
-	pbUser "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/userpb"
+	"github.com/Bekzodbekk/paris2024_livestream_protos/genproto/livepb"
 	pbMedal "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/medalspb"
+	pbUser "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/userpb"
 )
 
 type ServiceRepository interface {
@@ -20,7 +22,7 @@ type ServiceRepository interface {
 	GetUsers(ctx context.Context, req *pbUser.Void) (*pbUser.GetUsersResponse, error)
 	GetUserByFilter(ctx context.Context, req *pbUser.UserFilter) (*pbUser.GetUsersResponse, error)
 
-	//Model methods 
+	//Model methods
 	CreateMedal(req *pbMedal.CreateMedalRequest) (*pbMedal.CreateMedalResponse, error)
 	UpdateMedal(req *pbMedal.UpdateMedalRequest) (*pbMedal.UpdateMedalResponse, error)
 	DeleteMedal(req *pbMedal.DeleteMedalRequest) (*pbMedal.DeleteMedalResponse, error)
@@ -48,4 +50,8 @@ type ServiceRepository interface {
 	ListAthletes(req *pbUserAthlete.ListOfAthleteRequest) (*pbUserAthlete.ListOfAthleteResponse, error)
 	UpdateAthlete(req *pbUserAthlete.UpdateAthleteRequest) (*pbUserAthlete.Athlete, error)
 	DeleteAthlete(req *pbUserAthlete.DeleteAthleteRequest) (*pbUserAthlete.DeleteAthleteResponse, error)
+
+	// Live methods
+	CreateLiveStream(req *livepb.LiveStream) (*livepb.ResponseMessage, error)
+	GetLiveStream(req *livepb.GetStreamRequest) (*livepb.LiveStream, error)
 }

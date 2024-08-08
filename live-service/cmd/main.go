@@ -8,6 +8,7 @@ import (
 	liveRepo "live-service/internal/live/repository"
 	liveService "live-service/internal/live/service"
 	"live-service/logger"
+	"log"
 	"os"
 	"os/signal"
 	"sync"
@@ -43,6 +44,7 @@ func main() {
 	gServer := grpc.NewServer()
 	go func() {
 		defer wg.Done()
+		log.Printf("Live Service running on :%d port", cfg.ServerPort)
 		if err = r.RUN(*cfg); err != nil {
 			logger.Fatal("Failed to run gRPC service: ", err)
 		}

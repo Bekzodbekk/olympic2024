@@ -66,7 +66,8 @@ func NewGin(service *service.ServiceRepositoryClient) *gin.Engine {
 	r.PUT("/countries/:id", handler.UpdateCountry)
 	r.DELETE("/countries/:id", handler.DeleteCountry)
 
-
+	r.POST("/live/:eventId", handler.CreateLiveStream)
+	r.GET("/live/:eventId", handler.GetLiveStream)
 
 	return r
 }

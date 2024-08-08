@@ -1,37 +1,44 @@
 package service
 
 import (
+	"context"
+
 	pbAthlete "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/athletepb"
 	pbCountry "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/countrypb"
 	pbEvent "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/eventpb"
-	"context"
-	pbUser "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/userpb"
+	"github.com/Bekzodbekk/paris2024_livestream_protos/genproto/livepb"
+	pbLive "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/livepb"
 	pbMedal "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/medalspb"
+	pbUser "github.com/Bekzodbekk/paris2024_livestream_protos/genproto/userpb"
 )
 
 type ServiceRepositoryClient struct {
-	userClient pbUser.UserServiceClient
-	medalClient pbMedal.MedalServiceClient
+	userClient    pbUser.UserServiceClient
+	medalClient   pbMedal.MedalServiceClient
 	countryClient pbCountry.CountryServiceClient
 	eventClient   pbEvent.EventServiceClient
 	athleteClient pbAthlete.AthleteServiceClient
+	liveClient    pbLive.LiveStreamServiceClient
 }
 
-func NewServiceRepositoryClient (
+func NewServiceRepositoryClient(
 	conn1 *pbUser.UserServiceClient,
 	conn2 *pbMedal.MedalServiceClient,
 	conn3 *pbCountry.CountryServiceClient,
 	conn4 *pbEvent.EventServiceClient,
 	conn5 *pbAthlete.AthleteServiceClient,
+	conn6 *pbLive.LiveStreamServiceClient,
 ) *ServiceRepositoryClient {
 	return &ServiceRepositoryClient{
-		userClient: *conn1,
-		medalClient: *conn2,
+		userClient:    *conn1,
+		medalClient:   *conn2,
 		countryClient: *conn3,
 		eventClient:   *conn4,
 		athleteClient: *conn5,
+		liveClient:    *conn6,
 	}
 }
+
 //User methods
 
 func (s *ServiceRepositoryClient) Register(ctx context.Context, req *pbUser.CreateUserRequest) (*pbUser.CreateUserResponse, error) {
@@ -66,7 +73,7 @@ func (s *ServiceRepositoryClient) GetUserByFilter(ctx context.Context, req *pbUs
 	return s.userClient.GetUserByFilter(ctx, req)
 }
 
-//Medal methods
+// Medal methods
 func (s *ServiceRepositoryClient) CreateMedal(ctx context.Context, req *pbMedal.CreateMedalRequest) (*pbMedal.CreateMedalResponse, error) {
 	return s.medalClient.CreateMedal(ctx, req)
 }
@@ -90,7 +97,6 @@ func (s *ServiceRepositoryClient) GetMedals(ctx context.Context, req *pbMedal.Vo
 func (s *ServiceRepositoryClient) GetMedalByFilter(ctx context.Context, req *pbMedal.GetMedalByFilterRequest) (*pbMedal.GetMedalByFilterResponse, error) {
 	return s.medalClient.GetMedalByFilter(ctx, req)
 }
-
 
 // Country methods
 func (s *ServiceRepositoryClient) CreateCountry(req *pbCountry.CreateCountryRequest) (*pbCountry.Country, error) {
@@ -153,4 +159,14 @@ func (s *ServiceRepositoryClient) UpdateAthlete(req *pbAthlete.UpdateAthleteRequ
 
 func (s *ServiceRepositoryClient) DeleteAthlete(req *pbAthlete.DeleteAthleteRequest) (*pbAthlete.DeleteAthleteResponse, error) {
 	return s.athleteClient.DeleteAthlete(context.Background(), req)
+}
+
+// Live methods
+
+func(s *ServiceRepositoryClient) CreateLive(req *livepb.LiveStream) (*livepb.ResponseMessage, error){
+	return s.liveClient.CreateLiveStream(context.Background(), req)
+}
+
+func(s *ServiceRepositoryClient) GetLive(req *livepb.GetStreamRequest) (*livepb.LiveStream, error){
+	return s.liveClient.GetLiveStream(context.Background(), req)
 }

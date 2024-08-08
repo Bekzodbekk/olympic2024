@@ -15,6 +15,7 @@ type Config struct {
 	CountryService ServiceConfig
 	EventService   ServiceConfig
 	AthleteService ServiceConfig
+	LiveService    ServiceConfig
 }
 
 func Load(path string) (*Config, error) {
@@ -49,6 +50,10 @@ func Load(path string) (*Config, error) {
 		AthleteService: ServiceConfig{
 			Host: viper.GetString("services.athlete_service.host"),
 			Port: viper.GetInt("services.athlete_service.port"),
+		},
+		LiveService: ServiceConfig{
+			Host: viper.GetString("services.live_service.host"),
+			Port: viper.GetInt("services.live_service.port"),
 		},
 	}
 	return &cfg, nil

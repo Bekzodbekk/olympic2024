@@ -21,7 +21,6 @@ func NewMongoshLiveRepository(client mongosh.Mongo) LiveRepository {
 }
 
 func (db *MongoshLiveRepository) CreateLiveStream(req *pb.LiveStream) (*pb.ResponseMessage, error) {
-	// Create a new document in MongoDB
 	_, err := db.Client.Collection.InsertOne(context.Background(), req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create live stream: %v", err)

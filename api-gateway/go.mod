@@ -3,7 +3,7 @@ module api-gateway
 go 1.22.3
 
 require (
-	github.com/Bekzodbekk/paris2024_livestream_protos v0.0.0-20240806174759-0ec95b2e2aa4
+	github.com/Bekzodbekk/paris2024_livestream_protos v0.0.0-20240807182817-6d90402664c3
 	github.com/gin-gonic/gin v1.10.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.19.0
