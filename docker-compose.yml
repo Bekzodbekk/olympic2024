@@ -1,3 +1,5 @@
+version: '3.9'
+
 services:
   api-gateway:
     build:
@@ -39,7 +41,7 @@ services:
       - USER_SERVICE_PORT=8001
     depends_on:
       - redis
-      - postgresdb
+      - postgres
     networks:
       - mynetwork
 
@@ -53,7 +55,7 @@ services:
       - MEDAL_SERVICE_HOST=medal-service
       - MEDAL_SERVICE_PORT=8002
     depends_on:
-      - postgresdb
+      - postgres
     networks:
       - mynetwork
 
@@ -67,7 +69,7 @@ services:
       - COUNTRY_SERVICE_HOST=country-service
       - COUNTRY_SERVICE_PORT=8003
     depends_on:
-      - postgresdb
+      - postgres
     networks:
       - mynetwork
 
@@ -81,7 +83,7 @@ services:
       - EVENT_SERVICE_HOST=event-service
       - EVENT_SERVICE_PORT=8004
     depends_on:
-      - postgresdb
+      - postgres
     networks:
       - mynetwork
 
@@ -95,7 +97,7 @@ services:
       - ATHLETE_SERVICE_HOST=athlete-service
       - ATHLETE_SERVICE_PORT=8005
     depends_on:
-      - postgresdb
+      - postgres
     networks:
       - mynetwork
 
@@ -141,8 +143,8 @@ services:
     networks:
       - mynetwork
 
-  postgresdb:
-    container_name: postgres
+  postgres:
+    container_name: postgresdb
     image: postgres:14-alpine
     restart: always
     environment:
@@ -153,9 +155,53 @@ services:
       - db-data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - mynetwork
 
+  user-migrate:
+    image: migrate/migrate:latest
+    command: ["-path", "/migrations", "-database", "postgres://postgres:1@postgresdb:5432/userdb?sslmode=disable", "up"]
+    volumes:
+      - ./db/migrations:/migrations
+    depends_on:
+      - postgres
+
+  medal-migrate:
+    image: migrate/migrate:latest
+    command: ["-path", "/migrations", "-database", "postgres://postgres:1@postgresdb:5432/medaldb?sslmode=disable", "up"]
+    volumes:
+      - ./db/migrations:/migrations
+    depends_on:
+      - postgres
+
+  country-migrate:
+    image: migrate/migrate:latest
+    command: ["-path", "/migrations", "-database", "postgres://postgres:1@postgresdb:5432/countrydb?sslmode=disable", "up"]
+    volumes:
+      - ./db/migrations:/migrations
+    depends_on:
+      - postgres
+
+  event-migrate:
+    image: migrate/migrate:latest
+    command: ["-path", "/migrations", "-database", "postgres://postgres:1@postgresdb:5432/eventdb?sslmode=disable", "up"]
+    volumes:
+      - ./db/migrations:/migrations
+    depends_on:
+      - postgres
+
+  athlete-migrate:
+    image: migrate/migrate:latest
+    command: ["-path", "/migrations", "-database", "postgres://postgres:1@postgresdb:5432/athletedb?sslmode=disable", "up"]
+    volumes:
+      - ./db/migrations:/migrations
+    depends_on:
+      - postgres
 
 volumes:
   db-data:
