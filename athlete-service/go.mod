@@ -3,7 +3,7 @@ module athlete-service
 go 1.22.3
 
 require (
-	github.com/Bekzodbekk/paris2024_livestream_protos v0.0.0-20240806174759-0ec95b2e2aa4
+	github.com/Bekzodbekk/paris2024_livestream_protos v0.0.0-20240808051707-c80e1975d11b
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/lib/pq v1.10.9
 	github.com/sirupsen/logrus v1.9.3
@@ -34,7 +34,7 @@ require (
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240528184218-531527333157 // indirect
-	google.golang.org/protobuf v1.34.2 // indirect
+	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

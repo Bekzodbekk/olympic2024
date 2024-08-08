@@ -1,9 +1,9 @@
 server:
-  host: localhost
+  host: live-service
   port: 8006
 
 mongo:
-  host: localhost
+  host: mongodb
   port: 27017
   database: "liveStreamEvents"
   collection: events

@@ -4,20 +4,20 @@ server:
 
 services:
   user_service:
-    host: localhost
-    port: 8001
+    host: user-service
+    port: 7070
   medal_service:
-    host: localhost
+    host: medal-service
     port: 8002
   country_service:
-    host: localhost
+    host: country-service
     port: 8003
   event_service:
-    host: localhost
+    host: event-service
     port: 8004
   athlete_service:
-    host: localhost
+    host: athlete-service
     port: 8005
   live_service:
-    host: localhost
+    host: live-service
     port: 8006

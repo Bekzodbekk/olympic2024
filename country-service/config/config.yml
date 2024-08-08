@@ -1,9 +1,9 @@
 server:
-  host: localhost
+  host: country-service
   port: 8003
 
 postgres:
-  host: localhost
+  host: postgresdb
   port: 5432
   user: postgres
   password: 1

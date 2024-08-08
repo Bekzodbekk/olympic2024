@@ -8,6 +8,7 @@ import (
 )
 
 func (h *HandlerST) CreateLiveStream(ctx *gin.Context) {
+
 	eventId := ctx.Param("eventId")
 	var requestBody struct {
 		LeftSide  string            `json:"left_side"`
@@ -37,7 +38,9 @@ func (h *HandlerST) CreateLiveStream(ctx *gin.Context) {
 
 	ctx.JSON(200, resp)
 }
+
 func (h *HandlerST) GetLiveStream(ctx *gin.Context) {
+
 	eventId := ctx.Param("eventId")
 	resp, err := h.Service.GetLive(&livepb.GetStreamRequest{
 		Id: eventId,
@@ -46,6 +49,5 @@ func (h *HandlerST) GetLiveStream(ctx *gin.Context) {
 		ctx.JSON(400, err.Error())
 		return
 	}
-
 	ctx.JSON(200, resp)
 }
