@@ -50,7 +50,7 @@ func (h *HandlerST) CreateLiveStream(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param eventId path string true "Event ID"
-// @Success 200 {object} pb.LiveStream
+// @Success 200 {object} models.LiveStream
 // @Failure 400 {object} models.Message
 // @Failure 500 {object} models.Message
 func (h *HandlerST) GetLiveStream(ctx *gin.Context) {

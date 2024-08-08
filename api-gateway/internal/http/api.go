@@ -72,7 +72,7 @@ func NewGin(service *service.ServiceRepositoryClient) *gin.Engine {
 
 	r.GET("/live/:eventId", handler.GetLiveStream)
 
-	r.POST("/live/:eventId", handler.CreateLiveStream)
+	r.GET("/live", handler.CreateLiveStream)
 
 	return r
 }

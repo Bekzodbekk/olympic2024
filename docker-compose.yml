@@ -163,45 +163,6 @@ services:
     networks:
       - mynetwork
 
-  user-migrate:
-    image: migrate/migrate:latest
-    command: ["-path", "/migrations", "-database", "postgres://postgres:1@postgresdb:5432/userdb?sslmode=disable", "up"]
-    volumes:
-      - ./db/migrations:/migrations
-    depends_on:
-      - postgres
-
-  medal-migrate:
-    image: migrate/migrate:latest
-    command: ["-path", "/migrations", "-database", "postgres://postgres:1@postgresdb:5432/medaldb?sslmode=disable", "up"]
-    volumes:
-      - ./db/migrations:/migrations
-    depends_on:
-      - postgres
-
-  country-migrate:
-    image: migrate/migrate:latest
-    command: ["-path", "/migrations", "-database", "postgres://postgres:1@postgresdb:5432/countrydb?sslmode=disable", "up"]
-    volumes:
-      - ./db/migrations:/migrations
-    depends_on:
-      - postgres
-
-  event-migrate:
-    image: migrate/migrate:latest
-    command: ["-path", "/migrations", "-database", "postgres://postgres:1@postgresdb:5432/eventdb?sslmode=disable", "up"]
-    volumes:
-      - ./db/migrations:/migrations
-    depends_on:
-      - postgres
-
-  athlete-migrate:
-    image: migrate/migrate:latest
-    command: ["-path", "/migrations", "-database", "postgres://postgres:1@postgresdb:5432/athletedb?sslmode=disable", "up"]
-    volumes:
-      - ./db/migrations:/migrations
-    depends_on:
-      - postgres
 
 volumes:
   db-data:
